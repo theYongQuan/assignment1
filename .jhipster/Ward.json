@@ -1,0 +1,55 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "bed",
+            "otherEntityName": "bed",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "ward"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "wardReferenceId",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "minlength"
+            ],
+            "fieldValidateRulesMinlength": "7"
+        },
+        {
+            "fieldName": "wardName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "10"
+        },
+        {
+            "fieldName": "wardClassType",
+            "fieldType": "WardClassType",
+            "fieldValues": "A,B",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "wardLocation",
+            "fieldType": "WardLocation",
+            "fieldValues": "A1,A2",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "service": "serviceClass",
+    "entityTableName": "tbl_ward",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "jpaMetamodelFiltering": true,
+    "searchEngine": false,
+    "iconnectColumnsPerRow": 1,
+    "iconnectEnableAudit": false,
+    "iconnectApprovalType": false
+}

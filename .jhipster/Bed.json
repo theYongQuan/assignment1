@@ -1,0 +1,40 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "ward",
+            "otherEntityName": "ward",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "wardName"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "bedReferenceId",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]          
+        },
+        {
+            "fieldName": "bedName",
+            "fieldType": "String"           
+        },
+        {
+            "fieldName": "wardAllocationDate",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]       
+        }
+    ],
+    "service": "serviceClass",
+    "entityTableName": "tbl_bed",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "jpaMetamodelFiltering": true,
+    "searchEngine": false,
+    "iconnectColumnsPerRow": 2,
+    "iconnectEnableAudit": false
+}

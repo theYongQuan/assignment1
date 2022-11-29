@@ -1,0 +1,42 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="ward">
+            <h2><span jhiTranslate="iconnectSampleAppLabApp.ward.detail.title">Ward</span> {{ ward.id }}</h2>
+
+            <hr>
+
+            <ic-alert-error></ic-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="iconnectSampleAppLabApp.ward.wardReferenceId">Ward Reference Id</span></dt>
+                <dd>
+                    <span>{{ ward.wardReferenceId }}</span>
+                </dd>
+                <dt><span jhiTranslate="iconnectSampleAppLabApp.ward.wardName">Ward Name</span></dt>
+                <dd>
+                    <span>{{ ward.wardName }}</span>
+                </dd>
+                <dt><span jhiTranslate="iconnectSampleAppLabApp.ward.wardClassType">Ward Class Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'iconnectSampleAppLabApp.WardClassType.' + ward.wardClassType }}">{{ ward.wardClassType }}</span>
+                </dd>
+                <dt><span jhiTranslate="iconnectSampleAppLabApp.ward.wardLocation">Ward Location</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'iconnectSampleAppLabApp.WardLocation.' + ward.wardLocation }}">{{ ward.wardLocation }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/ward', ward.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
