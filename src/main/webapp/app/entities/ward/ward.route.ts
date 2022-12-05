@@ -44,7 +44,7 @@ export const wardRoute: Routes = [
     },
     data: {
       authorities: [Authority.USER],
-      defaultSort: 'id,asc',
+      defaultSort: 'wardReferenceId,asc',
       pageTitle: 'iconnectSampleAppLabApp.ward.home.title'
     },
     canActivate: [UserRouteAccessService]

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+// import { HttpClientModule } from '@angular/common/http';
 
 import { IconnectSampleAppLabSharedModule } from 'app/shared/shared.module';
 import { WardComponent } from './ward.component';

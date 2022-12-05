@@ -2,7 +2,8 @@
   "acmAdmin": {
     "home": {
       "title": "Access Control",
-      "SearchCriteria": "Search Criteria",
+      "SearchCriteriaBed": "Search for Bed",
+      "SearchCriteriaWard": "Search for Ward",
       "search": " &nbsp;Search",
       "reset": " &nbsp;Reset",
       "sn": "S/No.",

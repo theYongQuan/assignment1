@@ -2,21 +2,21 @@
   "iconnectSampleAppLabApp": {
     "ward": {
       "home": {
-        "title": "Wards",
-        "createLabel": "Create a new Ward",
+        "title": "Manage Ward",
+        "createLabel": "Add Ward",
         "createOrEditLabel": "Create or edit a Ward",
-        "notFound": "No Wards found"
+        "notFound": "No matching records"
       },
-      "created": "A new Ward is created with identifier {{ param }}",
-      "updated": "A Ward is updated with identifier {{ param }}",
-      "deleted": "A Ward is deleted with identifier {{ param }}",
+      "created": "Ward details added successfully",
+      "updated": "Ward details updated successfully",
+      "deleted": "Ward deleted successfully",
       "delete": {
-        "question": "Are you sure you want to delete Ward {{ id }}?"
+        "question": "All beds allocated to this ward will be deleted as well. Proceed to remove?"
       },
       "detail": {
         "title": "Ward"
       },
-      "wardReferenceId": "Ward Reference Id",
+      "wardReferenceId": "Ward Reference ID",
       "wardName": "Ward Name",
       "wardClassType": "Ward Class Type",
       "wardLocation": "Ward Location",

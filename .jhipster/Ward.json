@@ -29,7 +29,7 @@
         {
             "fieldName": "wardClassType",
             "fieldType": "WardClassType",
-            "fieldValues": "A,B",
+            "fieldValues": "A,B,C",
             "fieldValidateRules": [
                 "required"
             ]
@@ -37,7 +37,7 @@
         {
             "fieldName": "wardLocation",
             "fieldType": "WardLocation",
-            "fieldValues": "A1,A2",
+            "fieldValues": "A1,A2,B1,B2",
             "fieldValidateRules": [
                 "required"
             ]

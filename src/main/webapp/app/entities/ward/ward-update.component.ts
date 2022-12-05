@@ -8,27 +8,57 @@ import { Observable } from 'rxjs';
 import { IWard, Ward } from 'app/shared/model/ward.model';
 import { WardService } from './ward.service';
 
+import { CodeView, IcCodeService } from 'app/ng-iconnect';
+import { Title } from '@angular/platform-browser';
+// import { faSearch } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'ic-ward-update',
   templateUrl: './ward-update.component.html'
 })
 export class WardUpdateComponent implements OnInit {
   isSaving = false;
+  isDuplicateField = false;
+  isDuplicateFieldName = false;
+
+  public wardClassTypeDatas: CodeView[] = [];
+  public wardLocationDatas: CodeView[] = [];
+  originalWardId: String;
+  originalWardLocation: String;
+
+  wards?: IWard[];
 
   editForm = this.fb.group({
     id: [],
-    wardReferenceId: [null, [Validators.minLength(7)]],
-    wardName: [null, [Validators.maxLength(10)]],
+    wardReferenceId: [null, [Validators.required, Validators.maxLength(7), Validators.pattern(/WARD_(10|0[1-9])/)]],
+    wardName: [null, [Validators.required, Validators.maxLength(10)]],
     wardClassType: [null, [Validators.required]],
     wardLocation: [null, [Validators.required]]
   });
 
-  constructor(protected wardService: WardService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected codeService: IcCodeService,
+    protected wardService: WardService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder,
+    private titleService: Title
+  ) {}
 
   ngOnInit(): void {
+    this.codeService.gets('wardclasstype').subscribe((datas: any[]) => {
+      this.wardClassTypeDatas = datas[0];
+    });
+
+    this.codeService.gets('wardlocation').subscribe((datas: any[]) => {
+      this.wardLocationDatas = datas[0];
+    });
+
     this.activatedRoute.data.subscribe(({ ward }) => {
       this.updateForm(ward);
     });
+
+    this.originalWardId = this.editForm.get(['wardReferenceId'])!.value;
+    this.originalWardLocation = this.editForm.get(['wardLocation'])!.value;
   }
 
   updateForm(ward: IWard): void {
@@ -39,15 +69,94 @@ export class WardUpdateComponent implements OnInit {
       wardClassType: ward.wardClassType,
       wardLocation: ward.wardLocation
     });
+
+    if (this.editForm.get('id').value) {
+      this.titleService.setTitle('Edit Ward');
+    } else {
+      this.titleService.setTitle('Add Ward');
+    }
   }
 
   previousState(): void {
     window.history.back();
   }
 
+  onBlur(): void {
+    if (this.editForm.get('id').value) {
+      // is edit ward page
+      if (!(this.originalWardId === this.editForm.get(['wardReferenceId'])!.value)) {
+        this.wardService
+          .query({
+            'wardReferenceId.equals': this.editForm.get(['wardReferenceId'])!.value
+          })
+          .subscribe(
+            (data: any) => {
+              if (data?.body?.length > 0) {
+                this.isDuplicateField = true;
+              } else {
+                this.isDuplicateField = false;
+              }
+            } /* ,(error)=>{} */
+          );
+      }
+    } else {
+      // is add ward page
+      this.wardService
+        .query({
+          'wardReferenceId.equals': this.editForm.get(['wardReferenceId'])!.value
+        })
+        .subscribe(
+          (data: any) => {
+            if (data?.body?.length > 0) {
+              this.isDuplicateField = true;
+            } else {
+              this.isDuplicateField = false;
+            }
+          } /* ,(error)=>{} */
+        );
+    }
+  }
+
+  onBlurName(): void {
+    if (this.editForm.get('id').value) {
+      // is edit ward page
+      if (!(this.originalWardLocation === this.editForm.get(['wardName'])!.value)) {
+        this.wardService
+          .query({
+            'wardName.equals': this.editForm.get(['wardName'])!.value
+          })
+          .subscribe(
+            (data: any) => {
+              if (data?.body?.length > 0) {
+                this.isDuplicateFieldName = true;
+              } else {
+                this.isDuplicateFieldName = false;
+              }
+            } /* ,(error)=>{} */
+          );
+      }
+    } else {
+      // is add ward page
+      this.wardService
+        .query({
+          'wardName.equals': this.editForm.get(['wardName'])!.value
+        })
+        .subscribe(
+          (data: any) => {
+            if (data?.body?.length > 0) {
+              this.isDuplicateFieldName = true;
+            } else {
+              this.isDuplicateFieldName = false;
+            }
+          } /* ,(error)=>{} */
+        );
+    }
+  }
+
   save(): void {
     this.isSaving = true;
     const ward = this.createFromForm();
+
     if (ward.id !== undefined) {
       this.subscribeToSaveResponse(this.wardService.update(ward));
     } else {

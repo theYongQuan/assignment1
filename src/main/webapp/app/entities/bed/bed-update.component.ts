@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -10,9 +10,41 @@ import { BedService } from './bed.service';
 import { IWard } from 'app/shared/model/ward.model';
 import { WardService } from 'app/entities/ward/ward.service';
 
+import { Title } from '@angular/platform-browser';
+
+import * as moment from 'moment';
+import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+
+/**
+
+* This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
+
+*/
+
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+  readonly DELIMITER = '/';
+
+  parse(value: string): NgbDateStruct | null {
+    if (value) {
+      const date = value.split(this.DELIMITER);
+      return {
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10)
+      };
+    }
+    return null;
+  }
+  format(date: NgbDateStruct | null): string {
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
+  }
+}
+
 @Component({
   selector: 'ic-bed-update',
-  templateUrl: './bed-update.component.html'
+  templateUrl: './bed-update.component.html',
+  providers: [{ provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]
 })
 export class BedUpdateComponent implements OnInit {
   isSaving = false;
@@ -21,17 +53,18 @@ export class BedUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    bedReferenceId: [null, [Validators.required]],
-    bedName: [],
+    bedReferenceId: [null, [Validators.required, Validators.maxLength(6), Validators.pattern(/BED_(10|0[1-9])/)]],
+    bedName: [null, [Validators.maxLength(17)]],
     wardAllocationDate: [null, [Validators.required]],
-    wardId: []
+    wardId: [null, [Validators.required]]
   });
 
   constructor(
     protected bedService: BedService,
     protected wardService: WardService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +75,17 @@ export class BedUpdateComponent implements OnInit {
     });
   }
 
+  dateValidator(control: FormControl): { [s: string]: boolean } {
+    if (control.value && (control.dirty || control.touched)) {
+      const date = moment(control.value);
+      const today = moment();
+      if (date.isBefore(today, 'day')) {
+        return { invalidDate: true };
+      }
+    }
+    return { invalidDate: false };
+  }
+
   updateForm(bed: IBed): void {
     this.editForm.patchValue({
       id: bed.id,
@@ -50,6 +94,12 @@ export class BedUpdateComponent implements OnInit {
       wardAllocationDate: bed.wardAllocationDate,
       wardId: bed.wardId
     });
+
+    if (this.editForm.get('id').value) {
+      this.titleService.setTitle('Edit Ward');
+    } else {
+      this.titleService.setTitle('Add Ward');
+    }
   }
 
   previousState(): void {

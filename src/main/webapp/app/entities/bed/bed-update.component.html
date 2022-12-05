@@ -13,12 +13,20 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="iconnectSampleAppLabApp.bed.bedReferenceId" for="field_bedReferenceId">Bed Reference Id</label>
-                    <input type="text" class="form-control" name="bedReferenceId" id="field_bedReferenceId"
+                    <input type="text" class="form-control" name="bedReferenceId" id="field_bedReferenceId" oninput="this.value = this.value.toUpperCase()"
                            formControlName="bedReferenceId"/>
                     <div *ngIf="editForm.get('bedReferenceId')!.invalid && (editForm.get('bedReferenceId')!.dirty || editForm.get('bedReferenceId')!.touched)">
                         <small class="form-text text-danger"
                                *ngIf="editForm.get('bedReferenceId')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('bedReferenceId')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 6 }">
+                        This field cannot be longer than 6 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('bedReferenceId')?.errors?.pattern" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'BED_NN' }">
+                        This field should follow this pattern: BED_NN, where NN is a number from 01 to 10.
                         </small>
                     </div>
                 </div>
@@ -27,6 +35,12 @@
                     <label class="form-control-label" jhiTranslate="iconnectSampleAppLabApp.bed.bedName" for="field_bedName">Bed Name</label>
                     <input type="text" class="form-control" name="bedName" id="field_bedName"
                            formControlName="bedName"/>
+                    <div *ngIf="editForm.get('bedName')!.invalid && (editForm.get('bedName')!.dirty || editForm.get('bedName')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('bedName')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 17 }">
+                        This field cannot be longer than 17 characters.
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -42,6 +56,10 @@
                                *ngIf="editForm.get('wardAllocationDate')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('wardAllocationDate')?.errors?.invalidDate" jhiTranslate="entity.validation.invalidDate">
+                        Date cannot be earlier than the current date.
+                        </small>
                     </div>
                 </div>
 
@@ -51,6 +69,12 @@
                         <option [ngValue]="null"></option>
                         <option [ngValue]="wardOption.id" *ngFor="let wardOption of wards; trackBy: trackById">{{ wardOption.wardName }}</option>
                     </select>
+                    <div *ngIf="editForm.get('wardId')!.invalid && (editForm.get('wardId')!.dirty || editForm.get('wardId')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('wardId')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
             </div>
 
@@ -59,8 +83,12 @@
                     <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
 
-                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary" [hidden]="!editForm.get('id')!.value">
                     <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+
+                <button type="submit" id="add-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary"[hidden]="editForm.get('id').value">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.add">Add</span>
                 </button>
             </div>
         </form>

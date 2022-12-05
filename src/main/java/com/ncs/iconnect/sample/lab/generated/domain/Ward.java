@@ -29,7 +29,7 @@ public class Ward implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 7)
+    @Size(max = 7)
     @Column(name = "ward_reference_id")
     private String wardReferenceId;
 
@@ -38,12 +38,12 @@ public class Ward implements Serializable {
     private String wardName;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     @Column(name = "ward_class_type", nullable = false)
     private WardClassType wardClassType;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     @Column(name = "ward_location", nullable = false)
     private WardLocation wardLocation;
 

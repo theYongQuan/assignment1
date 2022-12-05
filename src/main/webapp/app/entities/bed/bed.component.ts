@@ -25,13 +25,62 @@ export class BedComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
+  links: any;
+  reverse: any;
+  searchCriteria: any;
+  routeData: any;
+  previousPage: any;
+
   constructor(
     protected bedService: BedService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal
-  ) {}
+  ) {
+    this.itemsPerPage = ITEMS_PER_PAGE;
+    this.routeData = this.activatedRoute.data.subscribe(data => {
+      this.page = data['pagingParams'].page;
+      this.previousPage = data['pagingParams'].page;
+      this.reverse = data['pagingParams'].ascending;
+      this.predicate = data['pagingParams'].predicate;
+    });
+
+    this.searchCriteria = {
+      bedName: ''
+    };
+  }
+
+  search(): void {
+    this.links = {
+      last: 0
+    };
+    this.page = 0;
+    this.predicate = 'bedReferenceId';
+    this.reverse = false;
+    this.loadAll();
+  }
+
+  clear(): void {
+    this.searchCriteria = {
+      bedName: ''
+    };
+    this.loadPage(this.page);
+  }
+
+  loadAll(): void {
+    this.bedService
+      .query({
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+        'bedName.contains': this.searchCriteria.bedName
+      })
+      .subscribe(
+        (res: HttpResponse<IBed[]>) => this.onSuccess(res.body, res.headers, this.page),
+        () => this.onError()
+      );
+  }
 
   loadPage(page?: number): void {
     const pageToLoad: number = page || this.page;

@@ -22,8 +22,11 @@ import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { NgIConnectModule } from 'app/ng-iconnect';
+
 @NgModule({
   imports: [
+    NgIConnectModule,
     BrowserModule,
     IconnectSampleAppLabSharedModule,
     IconnectSampleAppLabCoreModule,

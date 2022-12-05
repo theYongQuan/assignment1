@@ -26,7 +26,7 @@ describe('Component Tests', () => {
                 subscribe: (fn: (value: Data) => void) =>
                   fn({
                     pagingParams: {
-                      predicate: 'id',
+                      predicate: 'wardReferenceId',
                       reverse: false,
                       page: 0
                     }

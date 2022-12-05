@@ -10,12 +10,18 @@ import { IWard } from 'app/shared/model/ward.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { WardService } from './ward.service';
 import { WardDeleteDialogComponent } from './ward-delete-dialog.component';
+import { IBed } from 'app/shared/model/bed.model';
+import { BedService } from '../bed/bed.service';
+import { CodeView, IcCodeService } from 'app/ng-iconnect';
+// import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 @Component({
   selector: 'ic-ward',
   templateUrl: './ward.component.html'
 })
 export class WardComponent implements OnInit, OnDestroy {
+  public wardClassTypeDatas: CodeView[] = [];
+  public wardLocationDatas: CodeView[] = [];
   wards?: IWard[];
   eventSubscriber?: Subscription;
   totalItems = 0;
@@ -25,13 +31,68 @@ export class WardComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
+  searchCriteria: any;
+  routeData: any;
+  previousPage: any;
+  reverse: any;
+  links: any;
+  beds?: IBed[];
   constructor(
+    protected codeService: IcCodeService,
     protected wardService: WardService,
+    protected bedService: BedService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal
-  ) {}
+  ) {
+    this.itemsPerPage = ITEMS_PER_PAGE;
+    this.routeData = this.activatedRoute.data.subscribe(data => {
+      this.page = data['pagingParams'].page;
+      this.previousPage = data['pagingParams'].page;
+      this.reverse = data['pagingParams'].ascending;
+      this.predicate = data['pagingParams'].predicate;
+    });
+
+    this.searchCriteria = {
+      wardName: ''
+    };
+  }
+
+  getBedCount(id): number {
+    return this.beds.filter(bed => bed.wardId === id).length;
+  }
+
+  search(): void {
+    this.links = {
+      last: 0
+    };
+    this.page = 0;
+    this.predicate = 'wardReferenceId';
+    this.reverse = false;
+    this.loadAll();
+  }
+
+  clear(): void {
+    this.searchCriteria = {
+      wardName: ''
+    };
+    this.loadPage(this.page);
+  }
+
+  loadAll(): void {
+    this.wardService
+      .query({
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+        'wardName.contains': this.searchCriteria.wardName
+      })
+      .subscribe(
+        (res: HttpResponse<IWard[]>) => this.onSuccess(res.body, res.headers, this.page),
+        () => this.onError()
+      );
+  }
 
   loadPage(page?: number): void {
     const pageToLoad: number = page || this.page;
@@ -49,12 +110,23 @@ export class WardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.codeService.gets('wardclasstype').subscribe((datas: any[]) => {
+      this.wardClassTypeDatas = datas[0];
+    });
+
+    this.codeService.gets('wardlocation').subscribe((datas: any[]) => {
+      this.wardLocationDatas = datas[0];
+    });
+
     this.activatedRoute.data.subscribe(data => {
       this.page = data.pagingParams.page;
       this.ascending = data.pagingParams.ascending;
       this.predicate = data.pagingParams.predicate;
       this.ngbPaginationPage = data.pagingParams.page;
       this.loadPage();
+    });
+    this.bedService.query().subscribe((res: HttpResponse<IBed[]>) => {
+      this.beds = res.body || [];
     });
     this.registerChangeInWards();
   }
@@ -81,7 +153,7 @@ export class WardComponent implements OnInit, OnDestroy {
 
   sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
+    if (this.predicate !== 'wardReferenceId') {
       result.push('id');
     }
     return result;

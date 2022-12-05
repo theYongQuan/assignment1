@@ -44,7 +44,7 @@ export const bedRoute: Routes = [
     },
     data: {
       authorities: [Authority.USER],
-      defaultSort: 'id,asc',
+      defaultSort: 'bedReferenceId,asc',
       pageTitle: 'iconnectSampleAppLabApp.bed.home.title'
     },
     canActivate: [UserRouteAccessService]

@@ -1,4 +1,5 @@
 export const enum WardClassType {
   A = 'A',
-  B = 'B'
+  B = 'B',
+  C = 'C'
 }

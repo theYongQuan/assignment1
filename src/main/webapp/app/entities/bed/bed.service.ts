@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -38,6 +38,13 @@ export class BedService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  query2(req?: any): Observable<HttpResponse<any>> {
+    const params: HttpParams = createRequestOption(req);
+    return this.http
+      .get(this.resourceUrl, { params, observe: 'response' })
+      .pipe(map((res: HttpResponse<any>) => this.convertArrayResponse(res)));
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
@@ -47,6 +54,17 @@ export class BedService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  private convertArrayResponse(res: HttpResponse<any[]>): HttpResponse<any[]> {
+    const jsonResponse: any[] | null = res.body;
+    const body: any[] = [];
+    if (jsonResponse) {
+      for (let i = 0; i < jsonResponse.length; i++) {
+        body.push(this.convertItemFromServer(jsonResponse[i]));
+      }
+    }
+    return res.clone({ body });
   }
 
   protected convertDateFromClient(bed: IBed): IBed {
@@ -71,5 +89,18 @@ export class BedService {
       });
     }
     return res;
+  }
+
+  private convertItemFromServer(entity: any): any {
+    const copy: IBed = Object.assign({}, entity);
+    if (copy.effectiveDt) {
+      const dateString = copy.effectiveDt.split('/');
+      copy.effectiveDt = new Date(dateString[2], dateString[0] - 1, dateString[1]);
+    }
+    if (copy.expiryDt) {
+      const dateString = copy.expiryDt.split('/');
+      copy.expiryDt = new Date(dateString[2], dateString[0] - 1, dateString[1]);
+    }
+    return copy;
   }
 }

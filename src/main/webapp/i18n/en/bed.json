@@ -2,24 +2,24 @@
   "iconnectSampleAppLabApp": {
     "bed": {
       "home": {
-        "title": "Beds",
+        "title": "Manage Bed",
         "createLabel": "Create a new Bed",
         "createOrEditLabel": "Create or edit a Bed",
-        "notFound": "No Beds found"
+        "notFound": "Please add a bed."
       },
-      "created": "A new Bed is created with identifier {{ param }}",
-      "updated": "A Bed is updated with identifier {{ param }}",
-      "deleted": "A Bed is deleted with identifier {{ param }}",
+      "created": "Bed details added successfully. Do you want to add another new bed?",
+      "updated": "Bed details updated successfully",
+      "deleted": "Bed deleted successfully",
       "delete": {
-        "question": "Are you sure you want to delete Bed {{ id }}?"
+        "question": "Proceed to remove {{ id }} {{ param }}?"
       },
       "detail": {
         "title": "Bed"
       },
-      "bedReferenceId": "Bed Reference Id",
+      "bedReferenceId": "Bed Reference ID",
       "bedName": "Bed Name",
       "wardAllocationDate": "Ward Allocation Date",
-      "ward": "Ward"
+      "ward": "Ward Name"
     }
   }
 }
