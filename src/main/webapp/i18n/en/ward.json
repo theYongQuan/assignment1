@@ -4,6 +4,7 @@
       "home": {
         "title": "Manage Ward",
         "createLabel": "Add Ward",
+        "editLabel": "Edit Ward",
         "createOrEditLabel": "Create or edit a Ward",
         "notFound": "No matching records"
       },
@@ -14,13 +15,16 @@
         "question": "All beds allocated to this ward will be deleted as well. Proceed to remove?"
       },
       "detail": {
-        "title": "Ward"
+        "title": "View Ward"
       },
       "wardReferenceId": "Ward Reference ID",
-      "wardName": "Ward Name",
+      "wardName": "Search for Ward",
+      "wardNameName": "Ward Name",
       "wardClassType": "Ward Class Type",
       "wardLocation": "Ward Location",
-      "bed": "Bed"
+      "bed": "Bed",
+      "bedCount": "Bed Count",
+      "bedListing": "Bed Listing"
     }
   }
 }

@@ -96,9 +96,9 @@ export class BedUpdateComponent implements OnInit {
     });
 
     if (this.editForm.get('id').value) {
-      this.titleService.setTitle('Edit Ward');
+      this.titleService.setTitle('Edit Bed');
     } else {
-      this.titleService.setTitle('Add Ward');
+      this.titleService.setTitle('Add Bed');
     }
   }
 

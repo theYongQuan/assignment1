@@ -20,7 +20,7 @@
                 <div class="card-header"><span jhiTranslate="acmAdmin.home.SearchCriteriaWard">Search Criteria</span></div>
                 <div class="card-block" style="padding:1.5%">
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" >Ward Name</label>
+                        <label class="col-sm-2 form-control-label" ><span jhiTranslate="iconnectSampleAppLabApp.ward.wardName">Search for Ward</span></label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" name="wardName" id="wardName" [(ngModel)]="searchCriteria.wardName" />
                         </div>
@@ -50,12 +50,10 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">S/N</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="wardReferenceId"><span jhiTranslate="iconnectSampleAppLabApp.ward.wardReferenceId">Ward Reference Id</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="wardName"><span jhiTranslate="iconnectSampleAppLabApp.ward.wardName">Ward Name</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="beds">No. of Beds</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="wardClassType"><span jhiTranslate="iconnectSampleAppLabApp.ward.wardClassType">Ward Class Type</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="wardLocation"><span jhiTranslate="iconnectSampleAppLabApp.ward.wardLocation">Ward Location</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -65,8 +63,6 @@
                     <td>{{ ward.wardReferenceId }}</td>
                     <td>{{ ward.wardName }}</td>
                     <td>{{getBedCount(ward.id)}}</td>
-                    <td jhiTranslate="{{ 'iconnectSampleAppLabApp.WardClassType.' + ward.wardClassType }}">{{ ward.wardClassType }}</td>
-                    <td jhiTranslate="{{ 'iconnectSampleAppLabApp.WardLocation.' + ward.wardLocation }}">{{ ward.wardLocation }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

@@ -3,7 +3,8 @@
     "bed": {
       "home": {
         "title": "Manage Bed",
-        "createLabel": "Create a new Bed",
+        "createLabel": "Add Bed",
+        "editLabel": "Edit Bed",
         "createOrEditLabel": "Create or edit a Bed",
         "notFound": "Please add a bed."
       },
@@ -11,13 +12,14 @@
       "updated": "Bed details updated successfully",
       "deleted": "Bed deleted successfully",
       "delete": {
-        "question": "Proceed to remove {{ id }} {{ param }}?"
+        "question": "Proceed to remove {{ id }}?"
       },
       "detail": {
         "title": "Bed"
       },
       "bedReferenceId": "Bed Reference ID",
-      "bedName": "Bed Name",
+      "bedName": "Search for Bed",
+      "bedNameName": "Bed Name",
       "wardAllocationDate": "Ward Allocation Date",
       "ward": "Ward Name"
     }

@@ -24,7 +24,7 @@ export class WardUpdateComponent implements OnInit {
   public wardClassTypeDatas: CodeView[] = [];
   public wardLocationDatas: CodeView[] = [];
   originalWardId: String;
-  originalWardLocation: String;
+  originalWardName: String;
 
   wards?: IWard[];
 
@@ -57,8 +57,8 @@ export class WardUpdateComponent implements OnInit {
       this.updateForm(ward);
     });
 
-    this.originalWardId = this.editForm.get(['wardReferenceId'])!.value;
-    this.originalWardLocation = this.editForm.get(['wardLocation'])!.value;
+    this.originalWardId = this.editForm.get(['wardReferenceId']).value;
+    this.originalWardName = this.editForm.get(['wardName']).value;
   }
 
   updateForm(ward: IWard): void {
@@ -71,9 +71,9 @@ export class WardUpdateComponent implements OnInit {
     });
 
     if (this.editForm.get('id').value) {
-      this.titleService.setTitle('Edit Ward');
+      this.titleService.setTitle('Edit Bed');
     } else {
-      this.titleService.setTitle('Add Ward');
+      this.titleService.setTitle('Add Bed');
     }
   }
 
@@ -98,6 +98,8 @@ export class WardUpdateComponent implements OnInit {
               }
             } /* ,(error)=>{} */
           );
+      } else {
+        this.isDuplicateField = false;
       }
     } else {
       // is add ward page
@@ -120,7 +122,7 @@ export class WardUpdateComponent implements OnInit {
   onBlurName(): void {
     if (this.editForm.get('id').value) {
       // is edit ward page
-      if (!(this.originalWardLocation === this.editForm.get(['wardName'])!.value)) {
+      if (!(this.originalWardName === this.editForm.get(['wardName'])!.value)) {
         this.wardService
           .query({
             'wardName.equals': this.editForm.get(['wardName'])!.value
@@ -134,6 +136,8 @@ export class WardUpdateComponent implements OnInit {
               }
             } /* ,(error)=>{} */
           );
+      } else {
+        this.isDuplicateFieldName = false;
       }
     } else {
       // is add ward page

@@ -12,7 +12,7 @@
                 <dd>
                     <span>{{ ward.wardReferenceId }}</span>
                 </dd>
-                <dt><span jhiTranslate="iconnectSampleAppLabApp.ward.wardName">Ward Name</span></dt>
+                <dt><span jhiTranslate="iconnectSampleAppLabApp.ward.wardNameName">Ward Name</span></dt>
                 <dd>
                     <span>{{ ward.wardName }}</span>
                 </dd>
@@ -24,18 +24,37 @@
                 <dd>
                     <span jhiTranslate="{{ 'iconnectSampleAppLabApp.WardLocation.' + ward.wardLocation }}">{{ ward.wardLocation }}</span>
                 </dd>
+                <dt><span jhiTranslate="iconnectSampleAppLabApp.ward.bedCount">Bed count</span></dt>
+                <dd>
+                    <span>{{getBedCount(ward.id)}}</span>
+                </dd>
             </dl>
+
+            <dt><span jhiTranslate="iconnectSampleAppLabApp.ward.bedListing">Bed Listing</span></dt>
+
+            <div class="table-responsive" id="entities">
+                <table class="table table-striped" aria-describedby="page-heading">
+                    <thead>
+                        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                            <th scope="col"><span jhiTranslate="global.field.id">ID</th>
+                            <th scope="col" jhiSortBy="bedReferenceId">Bed Reference ID<fa-icon icon="sort"></fa-icon></th>
+                            <th scope="col" jhiSortBy="bedName">Bed Name<fa-icon icon="sort"></fa-icon></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let bed of beds; trackBy: trackId">
+                        <tr *ngIf="bed.wardId === ward.id">
+                            <td><a [routerLink]="['/bed', bed.id, 'view']">{{bed.id}}</a></td>
+                            <td>{{ bed.bedReferenceId }}</td>
+                            <td>{{ bed.bedName }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-            </button>
-
-            <button type="button"
-                    [routerLink]="['/ward', ward.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">cancel</span>
             </button>
         </div>
     </div>

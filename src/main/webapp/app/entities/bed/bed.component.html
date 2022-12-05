@@ -20,7 +20,7 @@
                 <div class="card-header"><span jhiTranslate="acmAdmin.home.SearchCriteriaBed">Search Criteria</span></div>
                 <div class="card-block" style="padding:1.5%">
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" >Bed Name</label>
+                        <label class="col-sm-2 form-control-label"><span jhiTranslate="iconnectSampleAppLabApp.bed.bedName">Bed Name</span></label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" name="bedName" id="bedName" [(ngModel)]="searchCriteria.bedName" />
                         </div>
@@ -50,25 +50,23 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="bedReferenceId"><span jhiTranslate="iconnectSampleAppLabApp.bed.bedReferenceId">Bed Reference Id</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="bedName"><span jhiTranslate="iconnectSampleAppLabApp.bed.bedName">Bed Name</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="wardAllocationDate"><span jhiTranslate="iconnectSampleAppLabApp.bed.wardAllocationDate">Ward Allocation Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">S/N</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="wardWardName"><span jhiTranslate="iconnectSampleAppLabApp.bed.ward">Ward</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="bedReferenceId"><span jhiTranslate="iconnectSampleAppLabApp.bed.bedReferenceId">Bed Reference Id</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="bedName"><span jhiTranslate="iconnectSampleAppLabApp.bed.bedName">Bed Name</span> <fa-icon icon="sort"></fa-icon></th>           
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let bed of beds ;trackBy: trackId">
                     <td><a [routerLink]="['/bed', bed.id, 'view']">{{ bed.id }}</a></td>
-                    <td>{{ bed.bedReferenceId }}</td>
-                    <td>{{ bed.bedName }}</td>
-                    <td>{{ bed.wardAllocationDate | date:'mediumDate' }}</td>
                     <td>
                         <div *ngIf="bed.wardId">
                             <a [routerLink]="['/ward', bed.wardId , 'view']" >{{ bed.wardWardName }}</a>
                         </div>
                     </td>
+                    <td>{{ bed.bedReferenceId }}</td>
+                    <td>{{ bed.bedName }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

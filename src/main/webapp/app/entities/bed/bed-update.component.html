@@ -1,15 +1,11 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="ic-bed-heading" jhiTranslate="iconnectSampleAppLabApp.bed.home.createOrEditLabel">Create or edit a Bed</h2>
-
+            <h2 id="ic-bed-heading" jhiTranslate="iconnectSampleAppLabApp.bed.home.createLabel" [hidden]="editForm.get('id').value">Add Bed</h2>
+            
+            <h2 id="ic-bed-heading" jhiTranslate="iconnectSampleAppLabApp.bed.home.editLabel" [hidden]="!editForm.get('id')!.value">Edit bed</h2>
             <div>
                 <ic-alert-error></ic-alert-error>
-
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
-                    <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
-                </div>
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="iconnectSampleAppLabApp.bed.bedReferenceId" for="field_bedReferenceId">Bed Reference Id</label>
@@ -32,33 +28,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="iconnectSampleAppLabApp.bed.bedName" for="field_bedName">Bed Name</label>
+                    <label class="form-control-label" jhiTranslate="iconnectSampleAppLabApp.bed.bedNameName" for="field_bedName">Bed Name</label>
                     <input type="text" class="form-control" name="bedName" id="field_bedName"
                            formControlName="bedName"/>
                     <div *ngIf="editForm.get('bedName')!.invalid && (editForm.get('bedName')!.dirty || editForm.get('bedName')!.touched)">
                         <small class="form-text text-danger"
                                *ngIf="editForm.get('bedName')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 17 }">
                         This field cannot be longer than 17 characters.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="iconnectSampleAppLabApp.bed.wardAllocationDate" for="field_wardAllocationDate">Ward Allocation Date</label>
-                    <div class="input-group">
-                        <input id="field_wardAllocationDate" type="text" class="form-control" name="wardAllocationDate" ngbDatepicker #wardAllocationDateDp="ngbDatepicker" formControlName="wardAllocationDate"/>
-                        <span class="input-group-append">
-                            <button type="button" class="btn btn-secondary" (click)="wardAllocationDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
-                        </span>
-                    </div>
-                    <div *ngIf="editForm.get('wardAllocationDate')!.invalid && (editForm.get('wardAllocationDate')!.dirty || editForm.get('wardAllocationDate')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('wardAllocationDate')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('wardAllocationDate')?.errors?.invalidDate" jhiTranslate="entity.validation.invalidDate">
-                        Date cannot be earlier than the current date.
                         </small>
                     </div>
                 </div>
@@ -78,17 +54,37 @@
                 </div>
             </div>
 
-            <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-                </button>
+            <div class="form-group">
+                <label class="form-control-label" jhiTranslate="iconnectSampleAppLabApp.bed.wardAllocationDate" for="field_wardAllocationDate">Ward Allocation Date</label>
+                <div class="input-group">
+                    <input id="field_wardAllocationDate" type="text" class="form-control" name="wardAllocationDate" ngbDatepicker #wardAllocationDateDp="ngbDatepicker" formControlName="wardAllocationDate"/>
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="wardAllocationDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                    </span>
+                </div>
+                <div *ngIf="editForm.get('wardAllocationDate')!.invalid && (editForm.get('wardAllocationDate')!.dirty || editForm.get('wardAllocationDate')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('wardAllocationDate')?.errors?.required" jhiTranslate="entity.validation.required">
+                    This field is required.
+                    </small>
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('wardAllocationDate')?.errors?.invalidDate" jhiTranslate="entity.validation.invalidDate">
+                    Date cannot be earlier than the current date.
+                    </small>
+                </div>
+            </div>
 
+            <div>
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary" [hidden]="!editForm.get('id')!.value">
                     <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
 
                 <button type="submit" id="add-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary"[hidden]="editForm.get('id').value">
                     <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.add">Add</span>
+                </button>
+
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
             </div>
         </form>

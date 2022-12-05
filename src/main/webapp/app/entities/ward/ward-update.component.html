@@ -1,15 +1,16 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="ic-ward-heading" jhiTranslate="iconnectSampleAppLabApp.ward.home.createOrEditLabel">Create or edit a Ward</h2>
+                <h2 id="ic-ward-heading" jhiTranslate="iconnectSampleAppLabApp.ward.home.createLabel" [hidden]="editForm.get('id').value">Add Ward</h2>
 
+                <h2 id="ic-ward-heading" jhiTranslate="iconnectSampleAppLabApp.ward.home.editLabel" [hidden]="!editForm.get('id')!.value">Edit Ward</h2>
             <div>
                 <ic-alert-error></ic-alert-error>
 
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                <!-- <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
-                </div>
+                </div> -->
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="iconnectSampleAppLabApp.ward.wardReferenceId" for="field_wardReferenceId">Ward Reference Id</label>
@@ -34,7 +35,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="iconnectSampleAppLabApp.ward.wardName" for="field_wardName">Ward Name</label>
+                    <label class="form-control-label" jhiTranslate="iconnectSampleAppLabApp.ward.wardNameName" for="field_wardName">Ward Name</label>
                     <input type="text" class="form-control" name="wardName" id="field_wardName" (blur)="onBlurName()"
                            formControlName="wardName"/>
                     <div *ngIf="editForm.get('wardName')!.invalid && (editForm.get('wardName')!.dirty || editForm.get('wardName')!.touched)">
@@ -81,16 +82,16 @@
             </div>
 
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-                </button>
-
                 <button type="submit" id="add-entity" [disabled]="editForm.invalid || isSaving || isDuplicateField" class="btn btn-primary"[hidden]="editForm.get('id').value">
                     <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.add">Add</span>
                 </button>
 
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving || isDuplicateField" class="btn btn-primary" [hidden]="!editForm.get('id')!.value">
                     <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
             </div>
         </form>
